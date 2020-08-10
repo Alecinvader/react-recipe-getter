@@ -12,6 +12,7 @@ import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyles({
   root: {
     maxWidth: 345,
+    minWidth: 220,
   },
   media: {
     height: 140,

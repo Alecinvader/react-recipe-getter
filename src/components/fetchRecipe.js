@@ -103,7 +103,13 @@ export class RecipeFinder extends React.Component {
 
   recipeList() {
     return (
-      <div>
+      <Grid
+        container
+        direction="row"
+        justify="flex-start"
+        alignItems="center"
+        spacing={2}
+      >
         {this.state.recipes.map((recipe) => {
           return (
             <Grid item>
@@ -115,12 +121,21 @@ export class RecipeFinder extends React.Component {
             </Grid>
           );
         })}
-      </div>
+      </Grid>
     );
   }
 
-  onIngredientDelete() {
-    console.log("you deleted it");
+  onIngredientDelete(title) {
+    this.setState(
+      {
+        ingredients: this.state.ingredients.filter(
+          (ingredient) => ingredient !== title
+        ),
+      },
+      () => {
+        this.convertIngredientsToString();
+      }
+    );
   }
 
   onIngredientSubmit(url) {
@@ -213,25 +228,22 @@ export class RecipeFinder extends React.Component {
           {this.state.ingredients.map((ingredient) => {
             return (
               <Grid item>
-                <Chip label={ingredient} onDelete={this.onIngredientDelete} />
+                <Chip
+                  label={ingredient}
+                  onDelete={() => {
+                    this.onIngredientDelete(ingredient);
+                  }}
+                />
               </Grid>
             );
           })}
         </Grid>
 
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-          spacing={12}
-        >
-          {this.state.showSpinner === false ? (
-            this.recipeList()
-          ) : (
-            <LinearProgress />
-          )}
-        </Grid>
+        {this.state.showSpinner === false ? (
+          this.recipeList()
+        ) : (
+          <LinearProgress />
+        )}
       </Container>
     );
   }
