@@ -5,14 +5,15 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import RecipeFinder from "./components/fetchRecipeByIngredient";
 import Container from "@material-ui/core/Container";
 import CustomAppBar from "./components/app-bar";
+import RecipeViewer from "./components/viewRecipe";
 
 function App() {
   return (
     <Router>
       <CustomAppBar />
-      <Container maxWidth="lg">
-        <Route path="/" exact component={RecipeFinder} />
-      </Container>
+
+      <Route path="/" exact component={RecipeFinder} />
+      <Route path="/recipes/:id" component={RecipeViewer} />
     </Router>
   );
 }

@@ -8,6 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -18,6 +19,10 @@ const useStyles = makeStyles({
     height: 140,
   },
 });
+
+// onCardClick() {
+
+// }
 
 export default function MediaCard(props) {
   const classes = useStyles();
@@ -41,7 +46,7 @@ export default function MediaCard(props) {
       <CardActions>
         <Button size="small">Not interested</Button>
         <Button size="small" color="primary">
-          Learn more
+          <Link to={"/recipes/" + props.id}> Learn More </Link>
         </Button>
       </CardActions>
     </Card>

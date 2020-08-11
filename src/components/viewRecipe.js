@@ -5,11 +5,11 @@ export default class RecipeViewer extends React.Component {
     super(props);
 
     this.state = {
-      id: this.props.id,
+      id: props.id,
     };
   }
 
   render() {
-    return <h1>{this.props.id}</h1>;
+    return <h1>{this.state.id}</h1>;
   }
 }

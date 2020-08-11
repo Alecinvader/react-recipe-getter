@@ -9,9 +9,13 @@ import TextField from "@material-ui/core/TextField";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import "../styles.css";
+import { spacing } from "@material-ui/system";
 
 import Container from "@material-ui/core/Container";
 import Chip from "@material-ui/core/Chip";
+import { Divider } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 
 export class RecipeFinder extends React.Component {
   constructor(props) {
@@ -158,85 +162,87 @@ export class RecipeFinder extends React.Component {
 
   render() {
     return (
-      <Container>
-        <h3>Search recipes</h3>
-        <Paper>
+      <div>
+        {this.state.showSpinner === true ? <LinearProgress /> : <span></span>}
+        <Container>
+          <h3>Search recipes</h3>
+          <Paper>
+            <Grid
+              className="search-bar"
+              container
+              direction="row"
+              justify="flex-start"
+              alignItems="center"
+              spacing={3}
+            >
+              <Grid item>
+                <TextField
+                  variant="filled"
+                  type="text"
+                  label="Ingredient"
+                  onChange={this.onIngredientUpdate}
+                  value={this.state.currentIngredient}
+                />
+              </Grid>
+              <Grid item>
+                {this.state.ingredients.length < 3 ? (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    type="submit"
+                    onClick={this.onAddIngredient}
+                  >
+                    Add Ingredient
+                  </Button>
+                ) : (
+                  <Button disabled variant="filled" color="primary">
+                    Max Ingredients
+                  </Button>
+                )}
+              </Grid>
+              <Grid item>
+                {this.state.ingredients.length !== 0 ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    onClick={this.convertIngredientsToString}
+                  >
+                    Search Recipes
+                  </Button>
+                ) : (
+                  <Button disabled>Search Recipes</Button>
+                )}
+              </Grid>
+            </Grid>
+          </Paper>
+
           <Grid
             container
             direction="row"
             justify="flex-start"
             alignItems="center"
-            spacing={3}
+            spacing={2}
           >
-            <Grid item>
-              <TextField
-                variant="filled"
-                type="text"
-                label="Ingredient"
-                onChange={this.onIngredientUpdate}
-                value={this.state.currentIngredient}
-              />
-            </Grid>
-            <Grid item>
-              {this.state.ingredients.length < 3 ? (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  type="submit"
-                  onClick={this.onAddIngredient}
-                >
-                  Add Ingredient
-                </Button>
-              ) : (
-                <Button disabled variant="filled" color="primary">
-                  Max Ingredients
-                </Button>
-              )}
-            </Grid>
-            <Grid item>
-              {this.state.ingredients.length !== 0 ? (
-                <Button
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  onClick={this.convertIngredientsToString}
-                >
-                  Search Recipes
-                </Button>
-              ) : (
-                <Button disabled>Search Recipes</Button>
-              )}
-            </Grid>
+            {this.state.ingredients.map((ingredient) => {
+              return (
+                <Grid item>
+                  <Box pt={2}>
+                    <Chip
+                      label={ingredient}
+                      onDelete={() => {
+                        this.onIngredientDelete(ingredient);
+                      }}
+                    />
+                  </Box>
+                </Grid>
+              );
+            })}
           </Grid>
-        </Paper>
 
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-          spacing={2}
-        >
-          {this.state.ingredients.map((ingredient) => {
-            return (
-              <Grid item>
-                <Chip
-                  label={ingredient}
-                  onDelete={() => {
-                    this.onIngredientDelete(ingredient);
-                  }}
-                />
-              </Grid>
-            );
-          })}
-        </Grid>
-
-        {this.state.showSpinner === false ? (
-          this.recipeList()
-        ) : (
-          <LinearProgress />
-        )}
-      </Container>
+          {this.state.showSpinner === false ? this.recipeList() : <span></span>}
+        </Container>
+      </div>
     );
   }
 }
