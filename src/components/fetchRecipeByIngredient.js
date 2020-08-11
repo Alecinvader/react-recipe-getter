@@ -6,20 +6,10 @@ import "../App.css";
 import MediaCard from "./RecipeCards";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import GridList from "@material-ui/core/GridList";
-import GridListTile from "@material-ui/core/GridListTile";
-import GridListTileBar from "@material-ui/core/GridListTileBar";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import IconButton from "@material-ui/core/IconButton";
-import InfoIcon from "@material-ui/icons/Info";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+
 import Container from "@material-ui/core/Container";
 import Chip from "@material-ui/core/Chip";
 
@@ -170,53 +160,55 @@ export class RecipeFinder extends React.Component {
     return (
       <Container>
         <h3>Search recipes</h3>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          alignItems="center"
-          spacing={3}
-        >
-          <Grid item>
-            <TextField
-              variant="filled"
-              type="text"
-              label="Ingredient"
-              onChange={this.onIngredientUpdate}
-              value={this.state.currentIngredient}
-            />
+        <Paper>
+          <Grid
+            container
+            direction="row"
+            justify="flex-start"
+            alignItems="center"
+            spacing={3}
+          >
+            <Grid item>
+              <TextField
+                variant="filled"
+                type="text"
+                label="Ingredient"
+                onChange={this.onIngredientUpdate}
+                value={this.state.currentIngredient}
+              />
+            </Grid>
+            <Grid item>
+              {this.state.ingredients.length < 3 ? (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  type="submit"
+                  onClick={this.onAddIngredient}
+                >
+                  Add Ingredient
+                </Button>
+              ) : (
+                <Button disabled variant="filled" color="primary">
+                  Max Ingredients
+                </Button>
+              )}
+            </Grid>
+            <Grid item>
+              {this.state.ingredients.length !== 0 ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  onClick={this.convertIngredientsToString}
+                >
+                  Search Recipes
+                </Button>
+              ) : (
+                <Button disabled>Search Recipes</Button>
+              )}
+            </Grid>
           </Grid>
-          <Grid item>
-            {this.state.ingredients.length < 3 ? (
-              <Button
-                variant="outlined"
-                color="primary"
-                type="submit"
-                onClick={this.onAddIngredient}
-              >
-                Add Ingredient
-              </Button>
-            ) : (
-              <Button disabled variant="filled" color="primary">
-                Max Ingredients
-              </Button>
-            )}
-          </Grid>
-          <Grid item>
-            {this.state.ingredients.length !== 0 ? (
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                onClick={this.convertIngredientsToString}
-              >
-                Search Recipes
-              </Button>
-            ) : (
-              <Button disabled>Search Recipes</Button>
-            )}
-          </Grid>
-        </Grid>
+        </Paper>
 
         <Grid
           container
