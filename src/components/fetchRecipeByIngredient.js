@@ -36,6 +36,8 @@ export class RecipeFinder extends React.Component {
     );
     this.recipeList = this.recipeList.bind(this);
     this.onIngredientDelete = this.onIngredientDelete.bind(this);
+    this.filterUsedIngredients = this.filterUsedIngredients.bind(this);
+    this.filterExcludedIngredients = this.filterExcludedIngredients.bind(this);
   }
 
   onIngredientUpdate(event) {
@@ -105,12 +107,17 @@ export class RecipeFinder extends React.Component {
         spacing={2}
       >
         {this.state.recipes.map((recipe) => {
+          let usedIngredients = this.filterUsedIngredients(recipe);
+          let excludedIngredients = this.filterExcludedIngredients(recipe);
+
           return (
             <Grid item>
               <MediaCard
                 title={recipe.title}
                 image={recipe.image}
                 id={recipe.id}
+                usedIngredients={usedIngredients}
+                excludedIngredients={excludedIngredients}
               />
             </Grid>
           );
@@ -130,6 +137,29 @@ export class RecipeFinder extends React.Component {
         this.convertIngredientsToString();
       }
     );
+  }
+
+  filterUsedIngredients(recipe) {
+    let usedIngredients = [];
+
+    recipe.usedIngredients.map((ingredient) => {
+      usedIngredients.push(ingredient.name);
+    });
+
+    return usedIngredients;
+
+    console.log(usedIngredients);
+  }
+
+  filterExcludedIngredients(recipe) {
+    let excludedIngredients = [];
+
+    recipe.excludedIngredients.map((ingredient) => {
+      excludedIngredients.push(ingredient.name);
+    });
+
+    return excludedIngredients;
+    console.log(excludedIngredients);
   }
 
   onIngredientSubmit(url) {
@@ -167,54 +197,56 @@ export class RecipeFinder extends React.Component {
         <Container>
           <h3>Search recipes</h3>
           <Paper>
-            <Grid
-              className="search-bar"
-              container
-              direction="row"
-              justify="flex-start"
-              alignItems="center"
-              spacing={3}
-            >
-              <Grid item>
-                <TextField
-                  variant="filled"
-                  type="text"
-                  label="Ingredient"
-                  onChange={this.onIngredientUpdate}
-                  value={this.state.currentIngredient}
-                />
+            <Box px={2}>
+              <Grid
+                className="search-bar"
+                container
+                direction="row"
+                justify="flex-start"
+                alignItems="center"
+                spacing={3}
+              >
+                <Grid item>
+                  <TextField
+                    variant="filled"
+                    type="text"
+                    label="Ingredient"
+                    onChange={this.onIngredientUpdate}
+                    value={this.state.currentIngredient}
+                  />
+                </Grid>
+                <Grid item>
+                  {this.state.ingredients.length < 3 ? (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      type="submit"
+                      onClick={this.onAddIngredient}
+                    >
+                      Add Ingredient
+                    </Button>
+                  ) : (
+                    <Button disabled variant="filled" color="primary">
+                      Max Ingredients
+                    </Button>
+                  )}
+                </Grid>
+                <Grid item>
+                  {this.state.ingredients.length !== 0 ? (
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      onClick={this.convertIngredientsToString}
+                    >
+                      Search Recipes
+                    </Button>
+                  ) : (
+                    <Button disabled>Search Recipes</Button>
+                  )}
+                </Grid>
               </Grid>
-              <Grid item>
-                {this.state.ingredients.length < 3 ? (
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    type="submit"
-                    onClick={this.onAddIngredient}
-                  >
-                    Add Ingredient
-                  </Button>
-                ) : (
-                  <Button disabled variant="filled" color="primary">
-                    Max Ingredients
-                  </Button>
-                )}
-              </Grid>
-              <Grid item>
-                {this.state.ingredients.length !== 0 ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    onClick={this.convertIngredientsToString}
-                  >
-                    Search Recipes
-                  </Button>
-                ) : (
-                  <Button disabled>Search Recipes</Button>
-                )}
-              </Grid>
-            </Grid>
+            </Box>
           </Paper>
 
           <Grid

@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, LinearProgress, Typography } from "@material-ui/core";
+import { Grid, LinearProgress, Typography, Divider } from "@material-ui/core";
 import axios from "axios";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
@@ -39,38 +39,38 @@ class RecipeViewer extends React.Component {
   }
 
   componentDidMount() {
-    // this.setState({
-    //   showSpinner: true,
-    // });
-    // axios
-    //   .get(
-    //     `https://api.spoonacular.com/recipes/${this.state.id}/information?apiKey=${process.env.REACT_APP_APIKEY}&includeNutrition=false`
-    //   )
-    //   .then((response) => {
-    //     this.setState(
-    //       {
-    //         information: response.data,
-    //       },
-    //       () => {
-    //         console.log(response.data);
-    //       }
-    //     );
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    // axios
-    //   .get(
-    //     `https://api.spoonacular.com/recipes/${this.state.id}/ingredientWidget.json?apiKey=${process.env.REACT_APP_APIKEY}`
-    //   )
-    //   .then((response) => {
-    //     this.setState({
-    //       usedIngredients: response.data.ingredients.map((ingredient) => {
-    //         return ingredient.name;
-    //       }),
-    //       showSpinner: false,
-    //     });
-    //   });
+    this.setState({
+      showSpinner: true,
+    });
+    axios
+      .get(
+        `https://api.spoonacular.com/recipes/${this.state.id}/information?apiKey=${process.env.REACT_APP_APIKEY}&includeNutrition=false`
+      )
+      .then((response) => {
+        this.setState(
+          {
+            information: response.data,
+          },
+          () => {
+            console.log(response.data);
+          }
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    axios
+      .get(
+        `https://api.spoonacular.com/recipes/${this.state.id}/ingredientWidget.json?apiKey=${process.env.REACT_APP_APIKEY}`
+      )
+      .then((response) => {
+        this.setState({
+          usedIngredients: response.data.ingredients.map((ingredient) => {
+            return ingredient.name;
+          }),
+          showSpinner: false,
+        });
+      });
   }
 
   render() {
@@ -110,6 +110,13 @@ class RecipeViewer extends React.Component {
                 </Grid>
               </Box>
             </Paper>
+
+            <Box mt={3}>
+              <Typography variant="h4">Similar Recipes</Typography>
+              <Paper>
+                <Box px={2} py={2}></Box>
+              </Paper>
+            </Box>
           </Container>
         </Box>
       </div>
