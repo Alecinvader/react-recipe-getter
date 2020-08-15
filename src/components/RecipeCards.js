@@ -9,6 +9,10 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { Link } from "react-router-dom";
+import Chip from "@material-ui/core/Chip";
+import DoneIcon from "@material-ui/icons/Done";
+import ClearIcon from "@material-ui/icons/Clear";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles({
   root: {
@@ -38,9 +42,30 @@ export default function MediaCard(props) {
           <Typography gutterBottom variant="h5" component="h2">
             {props.title}
           </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Used ingredients:{" "}
-          </Typography>
+          <Grid container spacing={1}>
+            <Grid item>
+              {props.usedIngredients.map((ingredient) => {
+                return (
+                  <Chip
+                    icon={<DoneIcon />}
+                    label={ingredient}
+                    color="primary"
+                  />
+                );
+              })}
+            </Grid>
+            <Grid item>
+              {props.excludedIngredients.map((ingredient) => {
+                return (
+                  <Chip
+                    color="secondary"
+                    label={ingredient}
+                    icon={<ClearIcon />}
+                  />
+                );
+              })}
+            </Grid>
+          </Grid>
         </CardContent>
       </CardActionArea>
       <CardActions>

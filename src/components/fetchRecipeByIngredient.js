@@ -146,20 +146,19 @@ export class RecipeFinder extends React.Component {
       usedIngredients.push(ingredient.name);
     });
 
-    return usedIngredients;
-
     console.log(usedIngredients);
+    return usedIngredients;
   }
 
   filterExcludedIngredients(recipe) {
     let excludedIngredients = [];
 
-    recipe.excludedIngredients.map((ingredient) => {
+    recipe.unusedIngredients.map((ingredient) => {
       excludedIngredients.push(ingredient.name);
     });
 
-    return excludedIngredients;
     console.log(excludedIngredients);
+    return excludedIngredients;
   }
 
   onIngredientSubmit(url) {
