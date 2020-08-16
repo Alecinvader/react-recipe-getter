@@ -8,6 +8,7 @@ import createSpacing from "@material-ui/core/styles/createSpacing";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import MapIngredients from "./mapIngredients";
 
 const styles = {
   root: {
@@ -19,9 +20,8 @@ const styles = {
     height: 48,
     padding: "0 30px",
   },
-  test: {
-    color: "red",
-    fontSize: 25,
+  mainRecipe: {
+    padding: "35px",
   },
 };
 
@@ -34,18 +34,17 @@ class RecipeViewer extends React.Component {
       information: [],
       showSpinner: false,
       usedIngredients: [],
-      excludedIngredients: [],
+      similarRecipes: [],
     };
   }
 
   componentDidMount() {
     let usedIngredients = this.props.location.state.usedIngredients;
-    let excludedIngredients = this.props.location.state.excludedIngredients;
+    let tempList = [];
 
     this.setState({
       showSpinner: true,
       usedIngredients: usedIngredients,
-      excludedIngredients: excludedIngredients,
     });
     axios
       .get(
@@ -58,13 +57,49 @@ class RecipeViewer extends React.Component {
             showSpinner: false,
           },
           () => {
-            console.log(response.data);
+            // console.log(response.data);
           }
         );
       })
       .catch((error) => {
         console.log(error);
       });
+    axios
+      .get(
+        `https://api.spoonacular.com/recipes/${this.state.id}/similar?apiKey=${process.env.REACT_APP_APIKEY}`
+      )
+      .then((response) => {
+        console.log(response.data);
+        // for (
+        //   let index = response.data.length;
+        //   index < response.data.length;
+        //   index++
+        // ) {
+        //   axios
+        //     .get(
+        //       `https://api.spoonacular.com/recipes/${response.data[index]}/information?apiKey=${process.env.REACT_APP_APIKEY}&includeNutrition=false`
+        //     )
+        //     .then((detailedResponse) => {
+
+        //       // tempList.push(detailedResponse);
+        //       // this.setState(
+        //       //   {
+        //       //     similarRecipes: tempList,
+        //       //   },
+        //       //   () => {
+        //       //     console.log(this.state.similarRecipes);
+        //       //   }
+        //       // );
+        //     })
+        //     .catch((error) => {
+        //       console.log("Error fetching recipe by ID" + error);
+        //     });
+        // }
+      })
+      .catch((error) => {
+        console.log("Error finding similar recipes" + error);
+      });
+
     // axios
     //   .get(
     //     `https://api.spoonacular.com/recipes/${this.state.id}/ingredientWidget.json?apiKey=${process.env.REACT_APP_APIKEY}`
@@ -86,9 +121,14 @@ class RecipeViewer extends React.Component {
         {this.state.showSpinner !== false ? <LinearProgress /> : <span></span>}
         <Box my={4}>
           <Container>
-            <Paper elevation={3}>
-              <Box py={4} px={4}>
-                <Grid container justify="flex-start" alignItems="top">
+            <Box py={2} px={4} display="flex" justifyContent="center">
+              <Paper elevation={3} className={classes.mainRecipe}>
+                <Grid
+                  container
+                  justify="flex-start"
+                  alignItems="flex-start"
+                  spacing={1}
+                >
                   <Grid item>
                     <img
                       style={{ maxWidth: 400 }}
@@ -103,24 +143,39 @@ class RecipeViewer extends React.Component {
                   </Grid>
 
                   <Box px={3}>
-                    <Grid>
+                    <Grid container spacing={1} direction="column">
                       <Grid item>
                         <Typography variant="h4" gutterBottom>
                           {this.state.information.title || "Grilled Chicken"}
                         </Typography>
-                        <p>{this.state.usedIngredients[0]}</p>
                       </Grid>
-                      <Grid item></Grid>
+
+                      <Grid item>
+                        {MapIngredients(this.state.usedIngredients, true)}
+                      </Grid>
+                      <Grid item>
+                        <ul style={{ padding: "15px" }}>
+                          <li style={{ padding: "0px" }}>
+                            <Typography variant="subtitle1" gutterBottom>
+                              {"Ready in " +
+                                this.state.information.readyInMinutes +
+                                " minutes. "}
+                            </Typography>
+                          </li>
+                        </ul>
+                      </Grid>
                     </Grid>
                   </Box>
                 </Grid>
-              </Box>
-            </Paper>
+              </Paper>
+            </Box>
 
             <Box mt={3}>
               <Typography variant="h4">Similar Recipes</Typography>
               <Paper>
-                <Box px={2} py={2}></Box>
+                <Box px={2} py={2}>
+                  <p>{this.state.similarRecipes.length}</p>
+                </Box>
               </Paper>
             </Box>
           </Container>

@@ -34,7 +34,7 @@ function CustomAppBar() {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
-          News
+          Recipeasy
         </Typography>
         <Button color="inherit">Login</Button>
       </Toolbar>
