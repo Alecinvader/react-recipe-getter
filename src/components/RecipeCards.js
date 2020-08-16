@@ -13,6 +13,7 @@ import Chip from "@material-ui/core/Chip";
 import DoneIcon from "@material-ui/icons/Done";
 import ClearIcon from "@material-ui/icons/Clear";
 import Box from "@material-ui/core/Box";
+import MapIngredients from "./mapIngredients";
 
 const useStyles = makeStyles({
   root: {
@@ -43,28 +44,8 @@ export default function MediaCard(props) {
             {props.title}
           </Typography>
           <Grid container spacing={1}>
-            <Grid item>
-              {props.usedIngredients.map((ingredient) => {
-                return (
-                  <Chip
-                    icon={<DoneIcon />}
-                    label={ingredient}
-                    color="primary"
-                  />
-                );
-              })}
-            </Grid>
-            <Grid item>
-              {props.excludedIngredients.map((ingredient) => {
-                return (
-                  <Chip
-                    color="secondary"
-                    label={ingredient}
-                    icon={<ClearIcon />}
-                  />
-                );
-              })}
-            </Grid>
+            <Grid item>{MapIngredients(props.usedIngredients, true)}</Grid>
+            <Grid item>{MapIngredients(props.excludedIngredients, false)}</Grid>
           </Grid>
         </CardContent>
       </CardActionArea>

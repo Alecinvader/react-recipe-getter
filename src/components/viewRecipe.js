@@ -31,16 +31,21 @@ class RecipeViewer extends React.Component {
 
     this.state = {
       id: this.props.match.params.id,
-      usedIngredients: ["chicken", "pasta"],
-      excludedIngredients: ["rice"],
       information: [],
       showSpinner: false,
+      usedIngredients: [],
+      excludedIngredients: [],
     };
   }
 
   componentDidMount() {
+    let usedIngredients = this.props.location.state.usedIngredients;
+    let excludedIngredients = this.props.location.state.excludedIngredients;
+
     this.setState({
       showSpinner: true,
+      usedIngredients: usedIngredients,
+      excludedIngredients: excludedIngredients,
     });
     axios
       .get(
@@ -50,6 +55,7 @@ class RecipeViewer extends React.Component {
         this.setState(
           {
             information: response.data,
+            showSpinner: false,
           },
           () => {
             console.log(response.data);
@@ -59,18 +65,18 @@ class RecipeViewer extends React.Component {
       .catch((error) => {
         console.log(error);
       });
-    axios
-      .get(
-        `https://api.spoonacular.com/recipes/${this.state.id}/ingredientWidget.json?apiKey=${process.env.REACT_APP_APIKEY}`
-      )
-      .then((response) => {
-        this.setState({
-          usedIngredients: response.data.ingredients.map((ingredient) => {
-            return ingredient.name;
-          }),
-          showSpinner: false,
-        });
-      });
+    // axios
+    //   .get(
+    //     `https://api.spoonacular.com/recipes/${this.state.id}/ingredientWidget.json?apiKey=${process.env.REACT_APP_APIKEY}`
+    //   )
+    //   .then((response) => {
+    //     this.setState({
+    //       usedIngredients: response.data.ingredients.map((ingredient) => {
+    //         return ingredient.name;
+    //       }),
+
+    //     });
+    //   });
   }
 
   render() {
@@ -102,7 +108,7 @@ class RecipeViewer extends React.Component {
                         <Typography variant="h4" gutterBottom>
                           {this.state.information.title || "Grilled Chicken"}
                         </Typography>
-                        <p className={classes.test}>Test text</p>
+                        <p>{this.state.usedIngredients[0]}</p>
                       </Grid>
                       <Grid item></Grid>
                     </Grid>
