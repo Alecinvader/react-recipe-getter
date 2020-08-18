@@ -41,6 +41,7 @@ class RecipeViewer extends React.Component {
   componentDidMount() {
     let usedIngredients = this.props.location.state.usedIngredients;
     let tempList = [];
+    let idList = [];
 
     this.setState({
       showSpinner: true,
@@ -69,32 +70,33 @@ class RecipeViewer extends React.Component {
         `https://api.spoonacular.com/recipes/${this.state.id}/similar?apiKey=${process.env.REACT_APP_APIKEY}`
       )
       .then((response) => {
-        console.log(response.data);
-        // for (
-        //   let index = response.data.length;
-        //   index < response.data.length;
-        //   index++
-        // ) {
-        //   axios
-        //     .get(
-        //       `https://api.spoonacular.com/recipes/${response.data[index]}/information?apiKey=${process.env.REACT_APP_APIKEY}&includeNutrition=false`
-        //     )
-        //     .then((detailedResponse) => {
+        for (
+          let index = response.data.length;
+          index < response.data.length;
+          index++
+        ) {
+          idList.push(response.data[index].id);
 
-        //       // tempList.push(detailedResponse);
-        //       // this.setState(
-        //       //   {
-        //       //     similarRecipes: tempList,
-        //       //   },
-        //       //   () => {
-        //       //     console.log(this.state.similarRecipes);
-        //       //   }
-        //       // );
-        //     })
-        //     .catch((error) => {
-        //       console.log("Error fetching recipe by ID" + error);
-        //     });
-        // }
+          return axios
+            .get(
+              `https://api.spoonacular.com/recipes/${idList}/information?apiKey=${process.env.REACT_APP_APIKEY}&includeNutrition=false`
+            )
+            .then((detailedResponse) => {
+              console.log(detailedResponse.data);
+              // tempList.push(detailedResponse);
+              // this.setState(
+              //   {
+              //     similarRecipes: tempList,
+              //   },
+              //   () => {
+              //     console.log(this.state.similarRecipes + "d");
+              //   }
+              // );
+            })
+            .catch((error) => {
+              console.log("Error fetching recipe by ID" + error);
+            });
+        }
       })
       .catch((error) => {
         console.log("Error finding similar recipes" + error);
