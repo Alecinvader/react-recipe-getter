@@ -15,9 +15,8 @@ import purple from "@material-ui/core/colors/purple";
 import { useTheme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Background from "../assets/Background-01.jpg";
-import { Link } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 const mainColor = "#4dd0e1";
@@ -41,7 +40,7 @@ const styles = (theme) => ({
   },
 });
 
-class SplashPage extends React.Component {
+class SignUp extends React.Component {
   constructor(props) {
     super(props);
 
@@ -100,10 +99,32 @@ class SplashPage extends React.Component {
                       </Grid>
                     </Box>
                     <Grid item>
-                      <Typography variant="h4">Sign In</Typography>
+                      <Typography variant="h4">Register</Typography>
                     </Grid>
 
                     <form className={classes.form} noValidate>
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="fname"
+                        label="First Name"
+                        name="fname"
+                        autoComplete="name"
+                        autoFocus
+                      />
+                      <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="lname"
+                        label="Last Name"
+                        name="lname"
+                        autoComplete="name"
+                        autoFocus
+                      />
                       <TextField
                         variant="outlined"
                         margin="normal"
@@ -144,17 +165,15 @@ class SplashPage extends React.Component {
                           color="primary"
                           className={classes.submit}
                         >
-                          Sign In
+                          Sign Up
                         </Button>
                       </Box>
                       <Grid container>
-                        <Grid item xs>
-                          <Link href="#" variant="body2"></Link>
-                        </Grid>
+                        <Grid item xs></Grid>
                         <Grid item>
-                          <Link to={"/signup"}>
+                          <Link href="#" to={"/"}>
                             <MuiLink variant="body2">
-                              {" Don't have an account? Sign up."}
+                              {"Already have an account? Sign in"}
                             </MuiLink>
                           </Link>
                         </Grid>
@@ -171,8 +190,8 @@ class SplashPage extends React.Component {
   }
 }
 
-SplashPage.propTypes = {
+SignUp.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(SplashPage);
+export default withStyles(styles, { withTheme: true })(SignUp);

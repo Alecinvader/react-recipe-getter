@@ -12,6 +12,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import purple from "@material-ui/core/colors/purple";
 import green from "@material-ui/core/colors/green";
 import { ThemeProvider } from "@material-ui/core/styles";
+import SignUp from "./components/signup";
 
 const theme = createMuiTheme({
   palette: {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/search/*" component={CustomAppBar} />
         <Switch>
           <Route path="/" exact component={SplashPage} />
+          <Route path="/signup" component={SignUp} />
 
           <Route path="/search/ingredient" component={RecipeFinder} />
 
