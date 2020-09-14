@@ -54,7 +54,7 @@ export default function MediaCard(props) {
         <Button size="small" color="primary">
           <Link
             to={{
-              pathname: `/recipes/${props.id}`,
+              pathname: `/search/recipes/${props.id}`,
               state: {
                 usedIngredients: props.usedIngredients,
                 excludedIngredients: props.excludedIngredients,

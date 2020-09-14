@@ -35,9 +35,9 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Route path="/search/*" component={CustomAppBar} />
+        <Route path="/*" component={CustomAppBar} />
         <Switch>
-          <Route path="/" exact component={SplashPage} />
+          <Route path="/" exact component={RecipeFinder} />
           <Route path="/signup" component={SignUp} />
 
           <Route path="/search/ingredient" component={RecipeFinder} />
