@@ -1,9 +1,9 @@
-import React, { useCallback } from "react";
-import { withRouter } from "react-router";
+import React, { useCallback, useContext } from "react";
+import { withRouter, Redirect } from "react-router";
 import app from "../base";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import { Typography, Box, ThemeProvider, withTheme } from "@material-ui/core";
+import { Typography, Box} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -12,6 +12,7 @@ import Paper from "@material-ui/core/Paper";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+import { AuthContext } from "../auth";
 
 
 const mainColor = "#4dd0e1";
@@ -36,22 +37,29 @@ const useStyles = makeStyles({
   },
 });
 
-const SignUp = ({ history }) => {
+const LogIn = ({ history }) => {
 
   const classes = useStyles();
 
-  const handleSignUp = useCallback(async event => {
+  const handleLogIn = useCallback(async event => {
     event.preventDefault();
     const { email, password } = event.target.elements;
     try {
       await app
         .auth()
-        .createUserWithEmailAndPassword(email.value, password.value);
+        .signInWithEmailAndPassword(email.value, password.value);
       history.push("/search/ingredient");
     } catch (error) {
       alert(error);
     }
   }, [history]);
+
+
+  const { currentUser } = useContext(AuthContext);
+
+  if (currentUser) {
+    return <Redirect to="/search/ingredient" />;
+  }
 
   return (
     <Box>
@@ -98,10 +106,10 @@ const SignUp = ({ history }) => {
                       </Grid>
                     </Box>
                     <Grid item>
-                      <Typography variant="h4">Register</Typography>
+                      <Typography variant="h4">Login</Typography>
                     </Grid>
 
-                    <form className={classes.form} noValidate onSubmit={handleSignUp}>
+                    <form className={classes.form} noValidate onSubmit={handleLogIn}>
                       
                       <TextField
                         variant="outlined"
@@ -143,15 +151,15 @@ const SignUp = ({ history }) => {
                           color="primary"
                           className={classes.submit}
                         >
-                          Sign Up
+                          Sign In
                         </Button>
                       </Box>
                       <Grid container>
                         <Grid item xs></Grid>
                         <Grid item>
-                          <Link href="#" to={"/login"}>
+                          <Link href="#" to={"/signup"}>
                             <MuiLink variant="body2">
-                              {"Already have an account? Sign in"}
+                              {"New here? Register instead."}
                             </MuiLink>
                           </Link>
                         </Grid>
@@ -167,4 +175,4 @@ const SignUp = ({ history }) => {
   );
 };
 
-export default withRouter(SignUp);
+export default withRouter(LogIn);

@@ -1,18 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
+
 import "./App.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import RecipeFinder from "./components/fetchRecipeByIngredient";
-import Container from "@material-ui/core/Container";
 import CustomAppBar from "./components/app-bar";
 import RecipeViewer from "./components/viewRecipe";
-import SplashPage from "./components/splash";
 import { createMuiTheme } from "@material-ui/core/styles";
-import purple from "@material-ui/core/colors/purple";
-import green from "@material-ui/core/colors/green";
 import { ThemeProvider } from "@material-ui/core/styles";
 import SignUp from "./components/signup";
+import LogIn from "./components/SignIn";
+import { AuthProvider } from "./auth";
+import PrivateRoute from "./PrivateRoute";
 
 const theme = createMuiTheme({
   palette: {
@@ -33,19 +32,22 @@ const theme = createMuiTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
       <Router>
-        <Route path="/*" component={CustomAppBar} />
+        <Route path="/search/*" component={CustomAppBar} />
         <Switch>
-          <Route path="/" exact component={RecipeFinder} />
+          <Route path="/" exact component={SignUp} />
           <Route path="/signup" component={SignUp} />
+          <Route path="/login" component={LogIn} />
 
-          <Route path="/search/ingredient" component={RecipeFinder} />
+          <PrivateRoute path="/search/ingredient" component={RecipeFinder} />
 
-          <Route path="/search/recipes/:id" component={RecipeViewer} />
+          <PrivateRoute path="/search/recipes/:id" component={RecipeViewer} />
         </Switch>
       </Router>
     </ThemeProvider>
+    </AuthProvider>
   );
 }
 
