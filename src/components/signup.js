@@ -65,7 +65,7 @@ const SignUp = ({ history }) => {
                       variant="h4"
                       style={{ color: "white", fontWeight: "bold" }}
                     >
-                      Recipeasy
+                      Recipeasyy
                     </Typography>
                   </Box>
                 </Grid>
